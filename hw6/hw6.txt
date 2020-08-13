@@ -1,0 +1,104 @@
+Katherine Miao
+UID 204970866
+CS161 HW6.txt
+
+----------------------------------------------------------------------------------
+
+QUESTION 1: For each pair of atomic sentences, give the most general unifier if it exists.
+
+(a) P(A, A, B), P(x, y, z).
+    x=A, y=A, z=B
+
+(b) Q(y, G(A, B)), Q(G(x, x), y).
+    N/A
+
+(c) R(x,A,z) , R(B,y,z)
+    x=B, y=A
+
+(d) Older (Father(y), y), Older (Father(x), John).
+    y=John, x=y=John
+
+(e) Knows(Father(y),y), Knows(x,x).
+    N/A
+
+----------------------------------------------------------------------------------
+
+QUESTION 2: Consider the following sentences:
+1. John likes all kinds of food.
+2. Apples are food.
+3. Chicken is food.
+4. Anything someone eats and isn’t killed by is food.
+5. If you are killed by something, you are not alive.
+6. Bill eats peanuts and is still alive. *
+7. Sue eats everything Bill eats.
+
+(a) Translate these sentences into formulas in first-order logic.
+    1. Ax (Food(x) => Likes(John,x))
+    2. Food(Apple)
+    3. Food(Chicken)
+    4. Ax (Ey (Eats(y,x) & ~Kills(y,x)) => Food(x))
+    5. Ax (Ey Kills(y,x) => ~Alive(x))
+    6. Eats(Bill, Peanuts) & Alive(Bill)
+    7. Ax (Eats(Bill,x) => Eats(Sue,x))
+
+(b) Convert the formulas of part (a) into CNF (also called clausal form).
+    1.      ~Food(x) | Likes(John,x)
+    2.      Food(Apple)
+    3.      Food(Chicken)
+    4.      ~Eats(y,x) | Kills(x,y) | Food(x)
+    5.      ~Kills(y,x) | ~Alive(x)
+    6.1.    Eats(Bill,Peanuts) 
+    6.2.    Alive(Bill)
+    7.      ~Eats(Bill,x) | Eats(Sue,x)
+
+(c) Prove that John likes peanuts using resolution.
+	8. 		~Likes(John,Peanuts)		assumed
+    9.      ~Kills(x,Bill)              (5, 6.2)
+    10.      ~Eats(Bill,x) | Food(x)    (4, 9)
+    11.     Food(Peanuts)               (6.1, 10)
+    12.     Likes(John,Peanuts)         (1, 11)
+    13. 	[] contradiction! 			(8, 12)
+
+(d) Use resolution to answer the question, “What does Sue eat?”
+    14.     Eats(Sue,Peanuts)           (6.1, 7)
+    		because x resolves to Peanuts. 
+
+(e) Use resolution to answer (d) if, instead of the axiom marked with an asterisk above, we had:
+    • If you don’t eat, you die.
+    • If you die, you are not alive.
+    • Bill is alive.
+
+    1.      ~Food(x) | Likes(John,x)
+    2.      Food(Apple)
+    3.      Food(Chicken)
+    4.      ~Eats(g(x),x) | Kills(x,g(x)) | Food(x)
+    5.      ~Kills(g(x),x) | ~Alive(x)
+    6.1.    Eats(x,g(x)) | Die(x)
+    6.2.    ~Die(x) | ~Alive(x)
+    6.3     Alive(Bill)
+    7.      ~Eats(Bill,x) | Eats(Sue,x)
+
+    “What does Sue eat?”
+    8.      ~Die(Bill)      (6.2, 6.3)
+    9.      Eats(Bill,x)    (6.1, 8)
+    10.     Eats(Sue,x)     (7, 9)
+            x does not resolve to anything, so although Sue eats whatever Bill eats, 
+            we cannot conclude what exactly Sue eats. 
+
+----------------------------------------------------------------------------------
+
+QUESTION 3: Graph Coloring
+
+(1) Graph 1 with 3 colors is unsatisfiable.
+
+(2) Graph 1 with 4 colors is satisfiable. 
+
+(3) From these results, we can conclude that the minimum number of colors necessary
+    to satisfy Graph 1 is 4. 
+    A possible coloring is:
+    Red: 1, 3
+    Blue: 2, 6
+    Green: 5, 7
+    Purple: 4
+
+(4) The minimum number of colors required to color Graph 2 is 8. 
